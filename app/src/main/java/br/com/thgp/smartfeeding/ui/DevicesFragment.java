@@ -2,6 +2,7 @@ package br.com.thgp.smartfeeding.ui;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,8 +10,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import br.com.thgp.smartfeeding.R;
+import br.com.thgp.smartfeeding.model.FeederDevice;
+import br.com.thgp.smartfeeding.ui.adapter.FeederDeviceAdapter;
+import br.com.thgp.smartfeeding.util.Util;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +24,7 @@ import br.com.thgp.smartfeeding.R;
 public class DevicesFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private OnFragmentInteractionListener mListener;
+    private ListView mListView;
 
     public DevicesFragment() {
         // Required empty public constructor
@@ -38,8 +45,25 @@ public class DevicesFragment extends Fragment implements SharedPreferences.OnSha
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_devices, container, false);
+        initListView();
+        return mListView;
+    }
+
+    private void initListView(){
+        mListView = new ListView(getContext());
+
+        mListView.setAdapter(new FeederDeviceAdapter(getActivity(), Util.DevicesList));
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FeederDevice device = (FeederDevice) parent.getItemAtPosition(position);
+
+                if (device != null) {
+                    
+                }
+            }
+        });
     }
 
     @Override

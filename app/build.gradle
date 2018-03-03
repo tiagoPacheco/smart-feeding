@@ -16,10 +16,34 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        textReport = false
+        htmlReport = true
+        disable 'InvalidPackage'
+        fatal 'UnusedResources'
+        xmlOutput file("$projectDir.parent/reports/lint/lint-output.xml")
+        htmlOutput file("$projectDir.parent/reports/lint/lint-output.html")
+    }
+
+    flavorDimensions "knot"
+    productFlavors {
+        production {
+            versionName = android.defaultConfig.versionName
+            dimension "knot"
+        }
+        development {
+            versionName = "development - " + android.defaultConfig.versionName
+            dimension "knot"
+        }
+
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -27,5 +51,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'br.org.cesar.knot:knot-android:1.2.0'
+
+    compile project(path: ':androidlibrary')
+    //    compile 'br.org.cesar.knot:knot-android:1.2.0'
 }

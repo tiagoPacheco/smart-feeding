@@ -23,6 +23,11 @@ public class PreferenceUtil {
     public static final String Preference_Period = "Preference_Period";
 
     private static final String PREFERENCES_NAME = "smartfeeding_preference";
+
+    public static final String KEY_END_POINT = "KNOT_URL";
+    public static final String KEY_UUID = "USER_UUID";
+    public static final String KEY_TOKEN = "USER_TOKEN";
+
     private static Object lock = new Object();
 
     private static PreferenceUtil sInstance;
@@ -48,6 +53,10 @@ public class PreferenceUtil {
      */
     public static void reset() {
         getInstance().getPref().edit().clear().apply();
+    }
+
+    public String getEndPoint() {
+        return getPref().getString(KEY_END_POINT, "");
     }
 
     private SharedPreferences getPref() {
