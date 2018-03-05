@@ -9,16 +9,14 @@ import br.org.cesar.knot.lib.model.AbstractThingData;
 public class FeederData extends AbstractThingData {
 
     private String uuid;
-    private boolean currentValue;
+    private String currentValue;
 
-    public boolean getCurrentValue() {
+    public String getCurrentValue() {
         if(data != null){
-
-            Boolean b = (Boolean) data.value;
-            return b;
-        }else{
-            return false;
+            String  value = (String) data.value;
+            return value;
         }
+        return null;
     }
 
     public String getSwitchUUID() {
@@ -29,7 +27,7 @@ public class FeederData extends AbstractThingData {
         this.uuid = switchUUID;
     }
 
-    public void setCurrentValue(boolean currentValue) {
+    public void setCurrentValue(String currentValue) {
         this.currentValue = currentValue;
     }
 

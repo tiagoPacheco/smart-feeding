@@ -1,8 +1,12 @@
 package br.com.thgp.smartfeeding.ui;
 
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.app.Fragment;
@@ -15,7 +19,12 @@ import android.view.MenuItem;
 import java.util.List;
 
 import br.com.thgp.smartfeeding.R;
+import br.com.thgp.smartfeeding.model.FeederData;
 import br.com.thgp.smartfeeding.model.FeederDevice;
+import br.com.thgp.smartfeeding.services.IKnotServiceConnection;
+import br.com.thgp.smartfeeding.services.KnotIntegrationService;
+import br.com.thgp.smartfeeding.services.OnDataChangedListener;
+import br.com.thgp.smartfeeding.services.ServiceBinder;
 import br.com.thgp.smartfeeding.util.Logger;
 import br.com.thgp.smartfeeding.util.PreferenceUtil;
 import br.com.thgp.smartfeeding.util.TypePreferenceEnum;
@@ -25,9 +34,10 @@ import br.org.cesar.knot.lib.exception.InvalidDeviceOwnerStateException;
 import br.org.cesar.knot.lib.exception.KnotException;
 import br.org.cesar.knot.lib.model.KnotList;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements OnDataChangedListener, ServiceConnection {
 
     private static ProgressDialog mProgressDialog = null;
+    private IKnotServiceConnection mKnotServiceConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +56,21 @@ public class DashboardActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container, new FeederFragment()).commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent it = new Intent(this, KnotIntegrationService.class);
+        startService(it);
+        bindService(it, this, BIND_AUTO_CREATE);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unbindService(this);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -121,6 +146,36 @@ public class DashboardActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDataChanged(List<FeederData> deviceData) {
+        //Toast.makeText(this, "Data = " + deviceData.toString(), Toast.LENGTH_LONG).show();
+        String text = null;
+        for (FeederData data: deviceData){
+            if (data != null) {
+                //TODO Call notifications
+                switch (data.getCurrentValue()){
+                    case "":
+                        break;
+                }
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mKnotServiceConnection = ((ServiceBinder) service).getService();
+
+        mKnotServiceConnection.subscribe(getIntent().getStringExtra(Util.EXTRA_DEVICE_UUID), DashboardActivity.this);
+
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        mKnotServiceConnection = null;
     }
 
 }
