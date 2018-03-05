@@ -1,10 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Test">
-        <CheckBoxPreference
-            android:key="parent_explorer_preference"
-            android:title="Explorer"
-            android:summary="Explorer our Galaxy"
-            android:defaultValue="true"/>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Settings">
+        <PreferenceScreen
+            android:key="pet_settings"
+            android:title="Pet Settings"
+            android:summary="Register or update information of your pet">
+            <intent android:action="br.com.thgp.smartfeeding.ui.PetRegisterActivity"/>
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:key="smartFeeding_settings"
+            android:title="Smart Feeding Settings"
+            android:summary="Setup your SmartFeeding">
+            <intent android:action="br.com.thgp.smartfeeding.ui.SmartFeedingSettingActivity"/>
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:key="stock_settings"
+            android:title="Stock settings"
+            android:summary="Edit the stock of your SmartFeeding">
+            <intent android:action="br.com.thgp.smartfeeding.ui.StockSettingActivity"/>
+        </PreferenceScreen>
     </PreferenceCategory>
+
 </PreferenceScreen>

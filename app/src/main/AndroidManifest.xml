@@ -19,12 +19,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.PetRegisterActivity"/>
-        <activity
-            android:name=".ui.StockSettingActivity"/>
-        <activity
-            android:name=".ui.SmartFeedingSettingActivity"/>
+        <activity android:name=".ui.PetRegisterActivity">
+            <intent-filter>
+                <action android:name="br.com.thgp.smartfeeding.ui.PetRegisterActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.SmartFeedingSettingActivity">
+            <intent-filter>
+                <action android:name="br.com.thgp.smartfeeding.ui.SmartFeedingSettingActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.StockSettingActivity">
+            <intent-filter>
+                <action android:name="br.com.thgp.smartfeeding.ui.StockSettingActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.DashboardActivity"/>
     </application>

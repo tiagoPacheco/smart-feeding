@@ -40,5 +40,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
 
+    <string name="feed_your_pet">Feed your pet</string>
+
     <string name="reset_preferences">Reset Preferences</string>
 </resources>

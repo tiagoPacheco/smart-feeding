@@ -1,49 +1,70 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.thgp.smartfeeding.ui.FeederFragment">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context="br.com.thgp.smartfeeding.ui.FeederFragment"
+    android:gravity="center">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btn_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="40dp"
-        android:layout_marginTop="60dp"
-        android:fitsSystemWindows="true"
-        android:src="@drawable/ic_pets_black_24dp" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_pet_register"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:layout_marginTop="60dp"
-            android:fitsSystemWindows="true"
-            android:src="@drawable/ic_pets_black_24dp" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_smartfeeding_settings"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="Pet Name:"/>
+            <TextView
+                android:id="@+id/text_pet_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:layout_marginTop="60dp"
-            android:fitsSystemWindows="true"
-            android:src="@drawable/ic_dashboard_black_24dp" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/btn_stock_settings"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="Weight:"/>
+            <TextView
+                android:id="@+id/text_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:layout_marginTop="60dp"
-            android:fitsSystemWindows="true"
-            android:src="@drawable/ic_settings_black_24dp" />
-
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="Quantity food (g):"/>
+            <TextView
+                android:id="@+id/text_quantity_food"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:theme="@style/AppTheme.Button"
+            android:text="@string/feed_your_pet"/>
     </LinearLayout>
-</FrameLayout>
+</RelativeLayout>
