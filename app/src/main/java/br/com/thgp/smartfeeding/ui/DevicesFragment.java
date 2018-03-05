@@ -2,7 +2,6 @@ package br.com.thgp.smartfeeding.ui;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import br.com.thgp.smartfeeding.R;
 import br.com.thgp.smartfeeding.model.FeederDevice;
@@ -57,11 +57,10 @@ public class DevicesFragment extends Fragment implements SharedPreferences.OnSha
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FeederDevice device = (FeederDevice) parent.getItemAtPosition(position);
-
-                if (device != null) {
-
-                }
+            Util.CurrentFeederDevice  = (FeederDevice) parent.getItemAtPosition(position);
+            if(Util.CurrentFeederDevice != null) {
+                Toast.makeText(getContext(), R.string.device_setted, Toast.LENGTH_LONG).show();
+            }
             }
         });
     }

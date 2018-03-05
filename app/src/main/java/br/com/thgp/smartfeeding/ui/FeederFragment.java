@@ -5,16 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import br.com.thgp.smartfeeding.R;
+import br.com.thgp.smartfeeding.model.FeederDataMessage;
+import br.com.thgp.smartfeeding.model.FeederDevice;
 import br.com.thgp.smartfeeding.util.PreferenceUtil;
 import br.com.thgp.smartfeeding.util.TypePreferenceEnum;
+import br.com.thgp.smartfeeding.util.Util;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,10 +31,19 @@ public class FeederFragment extends Fragment {
     private TextView mTextPetName;
     private TextView mTextWeight;
     private TextView mTextQtyFood;
+    private Button mButtonSendFood;
 
     public FeederFragment() {
         // Required empty public constructor
     }
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public String getMessageName(Message message) {
+            return super.getMessageName(message);
+        }
+    };
+
 
     public static FeederFragment newInstance() {
         FeederFragment fragment = new FeederFragment();
@@ -50,6 +65,7 @@ public class FeederFragment extends Fragment {
         mTextPetName = view.findViewById(R.id.text_pet_name);
         mTextWeight = view.findViewById(R.id.text_weight);
         mTextQtyFood = view.findViewById(R.id.text_quantity_food);
+        mButtonSendFood = view.findViewById(R.id.btn_feed_pet);
 
         String name = (String) PreferenceUtil.getPreferenceValue(
                 PreferenceUtil.Preference_Name, TypePreferenceEnum.String);
@@ -65,7 +81,39 @@ public class FeederFragment extends Fragment {
                 PreferenceUtil.Preference_Amount_Automatic, TypePreferenceEnum.Float);
         mTextQtyFood.setText(amount.toString());
 
+        mButtonSendFood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!Util.isFeederDeviceSetted(getContext())){
+                    return;
+                }
+
+                sendCommand();
+            }
+        });
+
         return view;
+    }
+
+    //@WorkerThread
+    private void sendCommand(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FeederDataMessage feederMessage = new FeederDataMessage();
+                feederMessage.getDevices().add(Util.CurrentFeederDevice.getUuid());
+                feederMessage.setMessage("true");
+
+                try {
+                    Message message = new Message();
+                    message.obj = feederMessage;
+
+                    mHandler.sendMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @Override

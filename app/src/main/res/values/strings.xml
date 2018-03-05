@@ -14,6 +14,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="device_setted">"Your device has been configured"</string>
+    <string name="device_not_setted">"Set up your device</string>
     <string name="feed_pet">Feed</string>
     <string name="devices">Devices</string>
     <string name="settings">Settings</string>
