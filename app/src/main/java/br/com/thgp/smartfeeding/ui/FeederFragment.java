@@ -77,9 +77,12 @@ public class FeederFragment extends Fragment {
                 PreferenceUtil.Preference_Weight, TypePreferenceEnum.Float);
         mTextWeight.setText(weight.toString());
 
-        Float amount = (Float) PreferenceUtil.getPreferenceValue(
+        final Float amount = (Float) PreferenceUtil.getPreferenceValue(
                 PreferenceUtil.Preference_Amount_Automatic, TypePreferenceEnum.Float);
         mTextQtyFood.setText(amount.toString());
+
+        final Float amountStock = (Float) PreferenceUtil.getPreferenceValue(
+                PreferenceUtil.Preference_Amount_Stock, TypePreferenceEnum.Float);
 
         mButtonSendFood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +90,9 @@ public class FeederFragment extends Fragment {
                 if(!Util.isFeederDeviceSetted(getContext())){
                     return;
                 }
+
+                PreferenceUtil.setPreferenceValue(PreferenceUtil.Preference_Amount_Stock,
+                        amountStock - amount, TypePreferenceEnum.Float);
 
                 sendCommand();
             }

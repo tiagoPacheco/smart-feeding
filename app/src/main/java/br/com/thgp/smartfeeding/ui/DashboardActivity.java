@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -150,19 +149,48 @@ public class DashboardActivity extends AppCompatActivity implements OnDataChange
 
     @Override
     public void onDataChanged(List<FeederData> deviceData) {
-        //Toast.makeText(this, "Data = " + deviceData.toString(), Toast.LENGTH_LONG).show();
-        String text = null;
         for (FeederData data: deviceData){
             if (data != null) {
-                //TODO Call notifications
                 switch (data.getCurrentValue()){
-                    case "":
+                    case Util.NotificationPetEating:
+                        Util.createSimpleNotification(this, "Pet is eating",
+                                "Your pet just started eating.", DashboardActivity.class);
+                        break;
+                    case Util.NotificationRemainingDaysEndMeal:
+                        CreateRemainingDaysNotification();
+                        break;
+
+                    case Util.NotificationMealsRemaining:
+                        CreateMealsRemainingNotification();
                         break;
                 }
             }
         }
+    }
 
+    private void CreateMealsRemainingNotification() {
+        Float amountByMeal = (Float) PreferenceUtil.getPreferenceValue(
+                PreferenceUtil.Preference_Amount_Automatic, TypePreferenceEnum.Float);
 
+        Float  amountStock = (Float) PreferenceUtil.getPreferenceValue(
+                PreferenceUtil.Preference_Amount_Stock, TypePreferenceEnum.Float);
+
+        Util.createSimpleNotification(this, "Check out your stock",
+                 String.format("Hey! Your pet have %.0f meals remaining", amountStock / amountByMeal), DashboardActivity.class);
+    }
+
+    private void CreateRemainingDaysNotification() {
+        Float amountByMeal = (Float) PreferenceUtil.getPreferenceValue(
+                PreferenceUtil.Preference_Amount_Automatic, TypePreferenceEnum.Float);
+        Float amountStock = (Float) PreferenceUtil.getPreferenceValue(
+                PreferenceUtil.Preference_Amount_Stock, TypePreferenceEnum.Float);
+
+        Float amountRemaining = amountStock / amountByMeal;
+        //TODO Get this information from SharedPreferences
+        Integer mealByDay = 3;
+
+        Util.createSimpleNotification(this, "Check out your stock",
+                String.format("Hey! Your pet have %.0f day(s) of food remaining", amountRemaining/mealByDay), DashboardActivity.class);
     }
 
     @Override

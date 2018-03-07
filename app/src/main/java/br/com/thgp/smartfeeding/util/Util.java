@@ -1,7 +1,12 @@
 package br.com.thgp.smartfeeding.util;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import java.util.List;
@@ -20,8 +25,13 @@ public class Util {
     public static final String EXTRA_DEVICE_UUID = "DEVICE_UUID";
     public static final String EXTRA_CURRENT_VALUE = "CURRENT_VALUE";
     public static FeederDevice CurrentFeederDevice = null;
+    public static final String NotificationMealsRemaining = "NotificationMealsRemaining";
+    public static final String NotificationPetEating = "NotificationAnimalEating";
+    public static final String NotificationRemainingDaysEndMeal = "NotificationRemainingDaysEndMeal";
 
     public static List<FeederDevice> DevicesList = null;
+
+    public static final int sNOTIFICATION_ID = 1000;
 
     public static ProgressDialog createSimpleProgressDialog(String title, String message, Context context) {
         return ProgressDialog.show(context, title, message, true);
@@ -33,5 +43,24 @@ public class Util {
             return false;
         }
         return true;
+    }
+
+    public static void createSimpleNotification(Context context, String title, String content, Class activityClass) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle(title)
+                .setContentText(content);
+        Intent resultIntent = new Intent(context, activityClass);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(activityClass);
+        stackBuilder.addNextIntent(resultIntent);
+
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
+
+        notificationManager.notify(sNOTIFICATION_ID, builder.build());
     }
 }
