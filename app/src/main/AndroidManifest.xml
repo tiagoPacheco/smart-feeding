@@ -39,6 +39,17 @@
         </activity>
         <activity
             android:name=".ui.DashboardActivity"/>
+        <service
+            android:name=".services.KnotIntegrationService"
+            android:exported="false" />
+
+        <receiver android:name=".util.BootCompletedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

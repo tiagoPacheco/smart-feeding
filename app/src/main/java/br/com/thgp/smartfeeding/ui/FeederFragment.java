@@ -37,14 +37,6 @@ public class FeederFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private Handler mHandler = new Handler() {
-        @Override
-        public String getMessageName(Message message) {
-            return super.getMessageName(message);
-        }
-    };
-
-
     public static FeederFragment newInstance() {
         FeederFragment fragment = new FeederFragment();
         Bundle args = new Bundle();
@@ -94,32 +86,11 @@ public class FeederFragment extends Fragment {
                 PreferenceUtil.setPreferenceValue(PreferenceUtil.Preference_Amount_Stock,
                         amountStock - amount, TypePreferenceEnum.Float);
 
-                sendCommand();
+                Util.sendCommand();
             }
         });
 
         return view;
-    }
-
-    //@WorkerThread
-    private void sendCommand(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                FeederDataMessage feederMessage = new FeederDataMessage();
-                feederMessage.getDevices().add(Util.CurrentFeederDevice.getUuid());
-                feederMessage.setMessage("true");
-
-                try {
-                    Message message = new Message();
-                    message.obj = feederMessage;
-
-                    mHandler.sendMessage(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     @Override

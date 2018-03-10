@@ -10,6 +10,7 @@ import android.widget.Toast;
 import br.com.thgp.smartfeeding.R;
 import br.com.thgp.smartfeeding.util.PreferenceUtil;
 import br.com.thgp.smartfeeding.util.TypePreferenceEnum;
+import br.com.thgp.smartfeeding.util.Util;
 
 public class SmartFeedingSettingActivity extends AppCompatActivity {
 
@@ -38,7 +39,7 @@ public class SmartFeedingSettingActivity extends AppCompatActivity {
 
         Integer feedingPerDay = (Integer) PreferenceUtil.getPreferenceValue(
                 PreferenceUtil.Preference_Meal_per_Day, TypePreferenceEnum.Int);
-        mPeriodText.setText(feedingPerDay.toString());
+        mFeedingPerDayText.setText(feedingPerDay.toString());
 
         mbtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +48,12 @@ public class SmartFeedingSettingActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), R.string.error_all_field_required, Toast.LENGTH_LONG).show();
                     return;
                 }
+
+                if(Util.HandleScheduler != null){
+                    Util.HandleScheduler.cancel(false);
+                }
+
+                Util.startScheduler();
 
                 PreferenceUtil.setPreferenceValue(PreferenceUtil.Preference_Amount_Automatic,
                         mAmountText.getText().toString(), TypePreferenceEnum.Float);
