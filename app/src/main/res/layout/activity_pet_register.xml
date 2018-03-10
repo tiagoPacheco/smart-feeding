@@ -2,7 +2,8 @@
 <ScrollView android:id="@+id/login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -53,13 +54,13 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <EditText
+            <com.vicmikhailau.maskededittext.MaskedEditText
                 android:id="@+id/text_birth_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/birth_date"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                app:mask="##/##/####" />
         </android.support.design.widget.TextInputLayout>
 
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"

@@ -21,6 +21,7 @@ public class PreferenceUtil {
     public static final String Preference_Amount_Automatic = "Preference_Amount_Automatic";
     public static final String Preference_Amount_Stock = "Preference_AmountStock";
     public static final String Preference_Period = "Preference_Period";
+    public static final String Preference_Meal_per_Day = "meal_per_day";
 
     private static final String PREFERENCES_NAME = "smartfeeding_preference";
 

@@ -30,6 +30,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/period"
+            android:inputType="number"
+            android:maxLines="1"
+            android:singleLine="true" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/text_feeding_per_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/feeding_per_day"
+            android:inputType="number"
             android:maxLines="1"
             android:singleLine="true" />
     </android.support.design.widget.TextInputLayout>

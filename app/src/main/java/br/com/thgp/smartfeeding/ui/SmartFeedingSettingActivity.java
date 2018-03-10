@@ -15,6 +15,7 @@ public class SmartFeedingSettingActivity extends AppCompatActivity {
 
     private EditText mAmountText;
     private EditText mPeriodText;
+    private EditText mFeedingPerDayText;
     private FloatingActionButton mbtnRegister;
 
     @Override
@@ -25,6 +26,7 @@ public class SmartFeedingSettingActivity extends AppCompatActivity {
         mAmountText = findViewById(R.id.text_amount);
         mPeriodText = findViewById(R.id.text_period);
         mbtnRegister = findViewById(R.id.btn_register);
+        mFeedingPerDayText = findViewById(R.id.text_feeding_per_day);
 
         Float amount = (Float) PreferenceUtil.getPreferenceValue(
                 PreferenceUtil.Preference_Amount_Automatic, TypePreferenceEnum.Float);
@@ -33,6 +35,10 @@ public class SmartFeedingSettingActivity extends AppCompatActivity {
         Integer period = (Integer) PreferenceUtil.getPreferenceValue(
                 PreferenceUtil.Preference_Period, TypePreferenceEnum.Int);
         mPeriodText.setText(period.toString());
+
+        Integer feedingPerDay = (Integer) PreferenceUtil.getPreferenceValue(
+                PreferenceUtil.Preference_Meal_per_Day, TypePreferenceEnum.Int);
+        mPeriodText.setText(feedingPerDay.toString());
 
         mbtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +53,9 @@ public class SmartFeedingSettingActivity extends AppCompatActivity {
 
                 PreferenceUtil.setPreferenceValue(PreferenceUtil.Preference_Period,
                         Integer.parseInt(mPeriodText.getText().toString()), TypePreferenceEnum.Int);
+
+                PreferenceUtil.setPreferenceValue(PreferenceUtil.Preference_Meal_per_Day,
+                        Integer.parseInt(mFeedingPerDayText.getText().toString()), TypePreferenceEnum.Int);
                 finish();
             }
         });

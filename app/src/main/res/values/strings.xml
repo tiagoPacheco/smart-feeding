@@ -39,6 +39,7 @@
     <string name="birth_date">Birth date</string>
     <string name="amount">Amount (g)</string>
     <string name="period">Period (days)</string>
+    <string name="feeding_per_day">Meal per day</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
 

@@ -184,10 +184,10 @@ public class DashboardActivity extends AppCompatActivity implements OnDataChange
                 PreferenceUtil.Preference_Amount_Automatic, TypePreferenceEnum.Float);
         Float amountStock = (Float) PreferenceUtil.getPreferenceValue(
                 PreferenceUtil.Preference_Amount_Stock, TypePreferenceEnum.Float);
+        Float mealByDay = (Float) PreferenceUtil.getPreferenceValue(
+                PreferenceUtil.Preference_Meal_per_Day, TypePreferenceEnum.Float);
 
         Float amountRemaining = amountStock / amountByMeal;
-        //TODO Get this information from SharedPreferences
-        Integer mealByDay = 3;
 
         Util.createSimpleNotification(this, "Check out your stock",
                 String.format("Hey! Your pet have %.0f day(s) of food remaining", amountRemaining/mealByDay), DashboardActivity.class);
