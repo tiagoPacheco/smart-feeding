@@ -1,12 +1,11 @@
+#include <KNoTThing.h>
 #include <Servo.h>
 
-#include <KNoTThing.h> 
+#define thingName "SmartFeeding-testing"
 
-#define thingName "SmartFeeding"
-
-#define infraredSensorId 1
-#define ultraSensorId 2
-#define servoMotorId 3
+#define infraredSensorId 3
+#define ultraSensorId 5
+#define servoMotorId 1
 
 #define infraredSensorName "infraredSensor"
 #define infraredSensorPin 4
@@ -15,10 +14,14 @@
 #define ultraSensorTrigPin 2
 #define ultraSensorEchoPin 3
 
+#define relaySensorPin 5
+
 #define servoMotorName "servoMotor"
 int servoMotorPin = A0;
 
 Servo servo;
+int servo_value = 0;
+bool gateOpened = false;
 
 KNoTThing thing;
 
@@ -29,7 +32,6 @@ int infraredRead(uint8_t *val) {
 }
 
 int infraredWrite(uint8_t *val) {
-    digitalWrite(infraredSensorPin, *val);
     return 0;
 }
 
@@ -61,15 +63,12 @@ int ultraWrite(uint8_t *val) {
 }
 
 int servoRead(int32_t *val, int32_t *multiplier) {
-    *val = servo.read();
+    *val = servo_value;
     return 0;
 }
 
 int servoWrite(int32_t *val) {
-    Serial.println("testing the foca");
-    servo.write(180);
-    delay(*val);
-    servo.write(0);
+    servo_value = *val;
     return 0;
 }
 
@@ -79,22 +78,58 @@ void setup() {
   pinMode(infraredSensorPin, INPUT);
   pinMode(ultraSensorTrigPin, OUTPUT);
   pinMode(ultraSensorEchoPin, INPUT);
+  pinMode(relaySensorPin, OUTPUT);
+
+  digitalWrite(relaySensorPin, HIGH);
+  delay(100);
 
   servo.attach(servoMotorPin);
-  servo.write(0);
+  servo.write(180);
   
+  delay(500);
+  digitalWrite(relaySensorPin, LOW);
   thing.init(thingName);
-  
+
   thing.registerBoolData(infraredSensorName, infraredSensorId, KNOT_TYPE_ID_SWITCH, KNOT_UNIT_NOT_APPLICABLE, infraredRead, infraredWrite);
-  thing.registerDefaultConfig(infraredSensorId, KNOT_EVT_FLAG_TIME, 10, 0, 0, 0, 0);
-
   thing.registerIntData(ultraSensorName, ultraSensorId, KNOT_TYPE_ID_DISTANCE, KNOT_UNIT_DISTANCE_M, ultraRead, ultraWrite);
-  thing.registerDefaultConfig(ultraSensorId, KNOT_EVT_FLAG_TIME, 20, 0, 0, 0, 0);
+//  thing.registerIntData(servoMotorName, servoMotorId, KNOT_TYPE_ID_TIME, KNOT_UNIT_TIME_MS, servoRead, servoWrite);
 
-  thing.registerIntData(servoMotorName, servoMotorId, KNOT_TYPE_ID_TIME, KNOT_UNIT_TIME_MS, servoRead, servoWrite);
-  thing.registerDefaultConfig(servoMotorId, KNOT_EVT_FLAG_TIME, 10, 0, 0, 0, 0);
+  thing.registerDefaultConfig(infraredSensorId, KNOT_EVT_FLAG_TIME, 5, 0, 0, 0, 0);
+  thing.registerDefaultConfig(ultraSensorId, KNOT_EVT_FLAG_TIME, 1, 0, 0, 0, 0);
+//  thing.registerDefaultConfig(servoMotorId, KNOT_EVT_FLAG_TIME, 1, 0, 0, 0, 0);
 }
+
+long curr_time = 0;
 
 void loop() {
   thing.run();
+
+  if (servo_value > 0) {
+    digitalWrite(relaySensorPin, HIGH);
+    
+    if (!gateOpened) {
+//        digitalWrite(relaySensorPin, HIGH);
+      delay(500);
+
+      gateOpened = true;
+      servo.write(100);
+      delay(500);
+//        digitalWrite(relaySensorPin, LOW);
+      Serial.println("gonna open");
+    }
+    
+    if ((millis() - curr_time > servo_value) && gateOpened) {
+        delay(500);
+
+        Serial.println("gonna close");
+        servo_value = 0;
+        servo.write(180);
+        delay(500);
+        gateOpened = false;
+    }
+    
+    digitalWrite(relaySensorPin, LOW);
+  } else {
+      curr_time = millis();
+  }
 }
